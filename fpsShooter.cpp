@@ -27,23 +27,24 @@ int main(){
   SetConsoleActiveScreenBuffer(hConsole);
   DWORD dwBytesWritten = 0;
 
-  wstring map;
 
+//Creat Map of World space, # = wall, . = space
+  wstring map;
   map += L"################";
   map += L"#...#......#...#";
   map += L"#..........#...#";
   map += L"#####......#...#";
   map += L"#..........#...#";
-  map += L"#..........#...#";
+  map += L"#########..###.#";
   map += L"#..............#";
-  map += L"#.###..........#";
-  map += L"#...#..........#";
-  map += L"#...#..........#";
-  map += L"#...#..........#";
+  map += L"#.###....#######";
+  map += L"#...#......#...#";
+  map += L"#...#......#...#";
+  map += L"#...#.....#....#";
   map += L"#...#..........#";
   map += L"#...#...########";
   map += L"#..............#";
-  map += L"#..............#";
+  map += L"#...#....#.....#";
   map += L"################";
 
   auto tp1 = chrono::system_clock::now();
@@ -57,22 +58,24 @@ int main(){
     //Controls
     //handle CCW Rotation
     if(GetAsyncKeyState((unsigned short)'A') & 0x8000){
-      fPlayerA -= (1.0f) * fElapsedTime;
+      //fPlayerA -= (1.0f) * fElapsedTime;
+      fPlayerX += sinf(fPlayerA) * 5.0f * fElapsedTime;
+      fPlayerX -= cosf(fPlayerA) * 5.0f * fElapsedTime;
+      if(map[(int)fPlayerY * nMapWidth + (int)fPlayerX] == '#'){
+        fPlayerX -= sinf(fPlayerA) * 5.0f * fElapsedTime;
+        fPlayerX += cosf(fPlayerA) * 5.0f * fElapsedTime;
+      }
     }
     if(GetAsyncKeyState((unsigned short)'D') & 0x8000){
-        fPlayerA += (1.0f) * fElapsedTime;
-    }
-    if(GetAsyncKeyState((unsigned short)'W') & 0x8000){
-
-        fPlayerX += sinf(fPlayerA) * 5.0f * fElapsedTime;
-        fPlayerY += cosf(fPlayerA) * 5.0f * fElapsedTime;
-
+        //fPlayerA += (1.0f) * fElapsedTime;
+        fPlayerX -= sinf(fPlayerA) * 2.0f * fElapsedTime;
+        fPlayerX += cosf(fPlayerA) * 5.0f * fElapsedTime;
         if(map[(int)fPlayerY * nMapWidth + (int)fPlayerX] == '#'){
-          fPlayerX -= sinf(fPlayerA) * 5.0f * fElapsedTime;
-          fPlayerY -= cosf(fPlayerA) * 5.0f * fElapsedTime;
+          fPlayerX += sinf(fPlayerA) * 5.0f * fElapsedTime;
+          fPlayerX -= cosf(fPlayerA) * 5.0f * fElapsedTime;
         }
     }
-    if(GetAsyncKeyState((unsigned short)'S') & 0x8000){
+    if(GetAsyncKeyState((unsigned short)'W') & 0x8000){
 
         fPlayerX -= sinf(fPlayerA) * 5.0f * fElapsedTime;
         fPlayerY -= cosf(fPlayerA) * 5.0f * fElapsedTime;
@@ -80,6 +83,16 @@ int main(){
         if(map[(int)fPlayerY * nMapWidth + (int)fPlayerX] == '#'){
           fPlayerX += sinf(fPlayerA) * 5.0f * fElapsedTime;
           fPlayerY += cosf(fPlayerA) * 5.0f * fElapsedTime;
+        }
+    }
+    if(GetAsyncKeyState((unsigned short)'S') & 0x8000){
+
+        fPlayerX += sinf(fPlayerA) * 5.0f * fElapsedTime;
+        fPlayerY += cosf(fPlayerA) * 5.0f * fElapsedTime;
+
+        if(map[(int)fPlayerY * nMapWidth + (int)fPlayerX] == '#'){
+          fPlayerX -= sinf(fPlayerA) * 5.0f * fElapsedTime;
+          fPlayerY -= cosf(fPlayerA) * 5.0f * fElapsedTime;
         }
     }
 
